@@ -1,0 +1,160 @@
+﻿@page
+@model SimpleShop.Web.Pages.Cart.CheckoutModel
+@{
+    ViewData["Title"] = "Fail";
+}
+
+<div class="container">
+    <div class="columns is-centered">
+        <div class="column is-7 m-1">
+            
+            <div class="block has-text-centered">
+                <p class="is-size-4">Cart Summary</p>
+            </div>
+            @foreach(var item in Model.Cart.Items)
+            {
+                <article class="media is-flex is-align-items-center">
+                    <figure class="media-left">
+                            <p class="image is-96x96">
+                                <img src="~/assets/@item.Product.ImagePath">
+                            </p>
+                    </figure>
+                    <div class="media-content">
+                        <p class="is-size-5 mb-0">@item.Product.Name</p>
+                        <p class="mb-0">Size: @item.Size</p>
+                        <p class="mb-0">Quantity: @item.Quantity</p>
+                    </div>
+                    <div class="media-right">
+                        <p class="has-text-weight-medium">@(item.Quantity * item.Product.Price) $</p>
+                    </div>
+                </article>
+            }
+            <article class="media is-flex is-justify-content-space-between">
+                <div class="media-left">
+                    <p class="mb-2">Dostawa:</p>
+                    <p class="has-text-weight-medium">Addition:</p>
+                </div>
+                <div class="media-right has-text-right">
+                    <p class="has-text-success mb-2">FREE</p>
+                    <p class="has-text-weight-medium">@Model.Cart.GetTotal() $</p>
+                </div>
+            </article>
+        </div>
+        <div class="column is-4 m-1">
+            <form class="mb-5" method="post">
+                <div class="block has-text-centered">
+                    <p class="is-size-4">Delivery</p>
+                </div>
+                <div asp-validation-summary="ModelOnly" class="has-text-danger"></div>
+                <div class="field">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="control">
+                                <input class="input" asp-for="Input.FirstName" type="text" placeholder="Name">
+                                <span asp-validation-for="Input.FirstName" class="has-text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="control">
+                                <input class="input" asp-for="Input.LastName" type="text" placeholder="Last name">
+                                <span asp-validation-for="Input.LastName" class="has-text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="columns">
+                        <div class="column is-8">
+                            <div class="control has-icons-left">
+                                <input class="input" asp-for="Input.Street" type="text" placeholder="Street">
+                                <span class="icon is-small is-left">
+                                    <i class='bx bx-home' ></i>
+                                </span>
+                                <span asp-validation-for="Input.Street" class="has-text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="column is-4">
+                            <div class="control">
+                                <input class="input" type="text" asp-for="Input.Apartment" placeholder="Building / flat number">
+                                <span asp-validation-for="Input.Apartment" class="has-text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="columns">
+                        <div class="column is-8">
+                            <div class="control has-icons-left">
+                                <input class="input" type="text" asp-for="Input.City" placeholder="City">
+                                <span class="icon is-small is-left">
+                                    <i class='bx bxs-city' ></i>
+                                </span>
+                                <span asp-validation-for="Input.City" class="has-text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="column is-4">
+                            <div class="control">
+                                <input class="input" type="text" asp-for="Input.PostalCode" placeholder="ZIP code">
+                                <span asp-validation-for="Input.PostalCode" class="has-text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="control has-icons-left">
+                                <input class="input" type="tel" asp-for="Input.Phone" placeholder="Cell phone no">
+                                <span class="icon is-small is-left">
+                                    <i class='bx bx-phone' ></i>
+                                </span>
+                                <span asp-validation-for="Input.Phone" class="has-text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="control has-icons-left">
+                                <input class="input" type="text" asp-for="Input.Email" placeholder="E-mail">
+                                <span class="icon is-left is-small">
+                                    <i class='bx bx-envelope'></i>
+                                </span>
+                                <span asp-validation-for="Input.Email" class="has-text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="block has-text-centered">
+                    <p class="is-size-4">Płatność</p>
+                </div>
+                <div class="control mb-5">
+                    <div class="payment-selector has-text-centered">
+                        <input type="radio" id="payment1" value="visa" asp-for="Input.PaymentMethod" />
+                        <label for="payment1">
+                            <span class="icon is-large">
+                                <i class='bx bxl-visa bx-lg'></i>
+                            </span>
+                        </label>
+                        <input type="radio" id="payment2" value="mastercard" asp-for="Input.PaymentMethod" />
+                        <label for="payment2">
+                            <span class="icon is-large">
+                                <i class='bx bxl-mastercard bx-lg' ></i>
+                            </span>
+                        </label>
+                        <input type="radio" id="payment3" value="paypal" asp-for="Input.PaymentMethod" />
+                        <label for="payment3">
+                            <span class="icon is-large">
+                                <i class='bx bxl-paypal bx-lg' ></i>
+                            </span>
+                        </label>
+                    </div>
+                    <span asp-validation-for="Input.PaymentMethod" class="has-text-danger"></span>
+                </div>
+                <div class="has-text-centered">
+                    <button type="submit" class="button is-success is-medium">pay @Model.Cart.GetTotal() $</button>
+                </div>
+            </form>
+        </div>     
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,99 @@
+﻿@page "{id:Guid}"
+@model SimpleShop.Web.Pages.Products.IndexModel
+
+@using Microsoft.AspNetCore.Identity
+@using SimpleShop.Domain.Entities
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if(Model.Product is not null)
+{
+    {
+        ViewData["Title"] = @Model.Product.Name;
+    }
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                <figure class="image">
+                    <img src="~/assets/@Model.Product.ImagePath" />
+                </figure>
+            </div>
+            <div class="column is-4">
+                <p class="is-size-3">@Model.Product.Name</p>
+                <p class="is-size-4 has-text-weight-medium">@Model.Product.Price $</p>
+                <div class="my-5 py-5 has-border-y">
+                    @if(SignInManager.IsSignedIn(User))
+                    {
+                        <form method="post" asp-page="/Cart/Index" asp-area="" asp-page-handler="AddItem" asp-route-productId="@Model.Product.Id" asp-route-size="@Model.Size">
+                            <div class="field">
+                                <label class="label">Size</label>
+                                <div class="control">
+                                    <div class="select">
+                                        <select asp-for="Size">
+                                            <option selected value="42">42</option>
+                                            <option value="43">43</option>
+                                            <option value="44">44</option>
+                                            <option value="45">45</option>
+                                            <option value="46">46</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <button class="button is-dark" type="submit">
+                                        add to cart
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class='bx bx-package'></i>
+                                    </span>
+                                    <span class="is-underlined">free delivery</span>
+                                </span>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <p class="has-text-danger">Log in to buy @Model.Product.Name</p>
+                    }
+                </div>           
+                <p class="is-size-5 block">Description</p>
+                <p>Details Here</p>
+            </div>
+        </div>
+        <div class="block has-text-centered">
+            <p class="is-size-4">
+                Similar products
+            </p>
+        </div>
+        <div class="columns">        
+            @if(Model.RelatedProducts is not null)
+            {
+                @foreach(var relatedProduct in Model.RelatedProducts)
+                {
+                    <div class="column is-flex is-justify-content-center">
+                        <div class="card">
+                            <div class="card-image">
+                                <a asp-route-id="@relatedProduct.Id" asp-page="/Products/Index" asp-area="">
+                                    <figure class="image" style="width: 256px; height: 256px;">
+                                        <img src="~/assets/@relatedProduct.ImagePath">
+                                    </figure>
+                                </a>
+                            </div>
+                            <div class="card-content pt-1 pl-0">
+                                <p class="is-size-5">@relatedProduct.Name</p>
+                                <p class="has-text-weight-medium">@relatedProduct.Price $</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
+
+
